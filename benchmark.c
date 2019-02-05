@@ -66,7 +66,7 @@ void write_benchmarks(algorithm_t algo,
         int size = sample_size * i;
         int *arr = malloc(size * sizeof(int));
         array_t t = (array_t) { .arr = arr,
-            .start = 0, .end = size-1 };
+            .start = 0, .end = size};
         fprintf(f, "%d,", size);
         write_time_data(time_algorithm(t, algo), f);
         free(arr);

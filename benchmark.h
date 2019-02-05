@@ -1,6 +1,7 @@
 #ifndef benchmark_h
 #define benchmark_h
 
+#include <stdio.h>
 #include <time.h>
 
 typedef struct { int *arr, start, end; } array_t;

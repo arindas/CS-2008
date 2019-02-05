@@ -26,14 +26,14 @@ void dnc_max_min(array_t t) {
 		return;
 	
 	// single element
-	if (t.end == t.start) {
+	if (t.end - t.start == 1) {
 		compare(t.arr[t.start], t.arr[t.start]);
 	} 
 	// Array contains exactly 2 elements
 	// Note: If we do not provide this condition
 	// the perfomance of this algorithm reduces
 	// to a simple straight_max_min
-	else if(t.end - t.start == 1) {
+	else if(t.end - t.start == 2) {
 		int max_ = t.arr[t.start] > t.arr[t.start+1]?
 			t.arr[t.start]: t.arr[t.start+1];
 		int min_ = t.arr[t.start] + t.arr[t.start+1] - max_;
