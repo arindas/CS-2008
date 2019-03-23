@@ -1,4 +1,4 @@
-from insertion_sort import sort
+from selection_sort import sort
 
 import numpy as np
 import pandas as pd
