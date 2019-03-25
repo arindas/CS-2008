@@ -99,13 +99,13 @@ int * extract (heap_t *heap) {
 }
 
 
-heap_t * buildHeap(int *arr, int size, compareFn c) {
+heap_t * buildHeap(int *arr, int size, int cap, compareFn c) {
 	heap_t *h = malloc (sizeof (heap_t));
 
 	if (h == NULL) { errno = ENOMEM; return NULL; }
 
 	*h = (heap_t) {.arr = arr, .size = size,
-		.capacity = size, .compare = c};
+		.capacity = cap, .compare = c};
 
 	// apply heapify() on non leaf nodes only
 	for (int i = size/2; i >= 0; i--) {
