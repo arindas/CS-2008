@@ -44,7 +44,7 @@ void fill_code_map (hcode_ctx_t t, getc_fn getc) {
 		return;
 	
 	int c; while ((c = getc()) != -1) 
-		t.code_map[c % N_CHAR_SET].freq++;	
+		t.code_map[c % t.charset_len].freq++;	
 }
 
 void prune_hcode_ctx (hcode_ctx_t t) {
