@@ -28,5 +28,5 @@ int insert (heap_t *h, int key);
 
 int * extract (heap_t *h);
 
-heap_t * buildHeap (int *arr, int size, compareFn c);
+heap_t * buildHeap (int *arr, int size, int cap, compareFn c);
 #endif
