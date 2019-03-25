@@ -1,10 +1,10 @@
 #include <stdio.h>
 
-struct Act {
+typedef struct Act {
 	char id[5];
 	int start;
 	int finish;
-}typedef Activity;
+} Activity;
 
 void activitySelection(Activity activities[], int n);
 
