@@ -314,12 +314,12 @@ void fill_code_map (hcode_ctx_t t, getc_fn getc) {
  28c:	0f 1f 40 00          	nopl   0x0(%rax)
 
 0000000000000290 <prune_hcode_ctx>:
-void prune_hcode_ctx (hcode_ctx_t t) {
- 290:	8b 54 24 1c          	mov    0x1c(%rsp),%edx
+	while (++i < t.charset_len) {
+ 290:	8b 54 24 18          	mov    0x18(%rsp),%edx
  294:	4c 8b 54 24 10       	mov    0x10(%rsp),%r10
 		int f = t.code_map[t.char_map[i]].freq;
  299:	4c 8b 44 24 08       	mov    0x8(%rsp),%r8
-	while (++i < t.n_chars) {
+	while (++i < t.charset_len) {
  29e:	85 d2                	test   %edx,%edx
  2a0:	7e 39                	jle    2db <prune_hcode_ctx+0x4b>
  2a2:	83 ea 01             	sub    $0x1,%edx
@@ -343,7 +343,7 @@ void prune_hcode_ctx (hcode_ctx_t t) {
  2ce:	89 38                	mov    %edi,(%rax)
  2d0:	89 0a                	mov    %ecx,(%rdx)
  2d2:	48 83 c0 04          	add    $0x4,%rax
-	while (++i < t.n_chars) {
+	while (++i < t.charset_len) {
  2d6:	4c 39 c8             	cmp    %r9,%rax
  2d9:	75 d5                	jne    2b0 <prune_hcode_ctx+0x20>
 }

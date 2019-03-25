@@ -50,7 +50,7 @@ void fill_code_map (hcode_ctx_t t, getc_fn getc) {
 void prune_hcode_ctx (hcode_ctx_t t) {
 	int i = -1, p = 0;
 
-	while (++i < t.n_chars) {
+	while (++i < t.charset_len) {
 		int f = t.code_map[t.char_map[i]].freq;
 		if (f > 0) swap(t.char_map, i, p++);
 	}
