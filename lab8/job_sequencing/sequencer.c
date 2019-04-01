@@ -135,6 +135,7 @@ int main (int argc, char *args[]) {
 
 	job_sequence seq = get_job_sequence(jobs, njobs);
 	write_job_seq (seq, stdout);
-
+	
+	unregister (seq);
 	return 0;
 }
