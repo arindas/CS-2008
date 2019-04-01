@@ -26,7 +26,7 @@ hcode_ctx_t hcode_ctx (int charset_len, int ctx_capacity) {
 		errno = ENOMEM; 
 	else { 
 		t.charset_len = charset_len;
-		t.n_chars = t.charset_len; 
+		t.n_chars = 0; // chars reg. 
 		t.ctx_capacity = ctx_capacity; 
 	}
 
@@ -68,7 +68,7 @@ hcode_t * gen_huffman_tree (hcode_ctx_t t) {
 
 	build_heap (t.char_map, heap_ctx);
 
-	int c = N_CHAR_SET, i = t.n_chars;
+	int c = t.charset_len, i = t.n_chars;
 
 	int *root = NULL;
 
@@ -88,7 +88,7 @@ hcode_t * gen_huffman_tree (hcode_ctx_t t) {
 		insert (heap_ctx, t.char_map, c++);
 	}
 
-	root = extract (heap_ctx, t.char_map);
+	if (!root) root = extract (heap_ctx, t.char_map);
 
 	return root? &t.code_map[*root]: NULL;
 }
