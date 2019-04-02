@@ -29,7 +29,15 @@ typedef struct {
 	/* list of vertex anchors */
 	llist_t v_anchors; 
 
+	/* allocator */
+	allocator_t alloc;
+
 } adj_list_t;
+
+adj_list_t new_adj_list (allocator_t alloc) {
+	return (adj_list_t) { .alloc = alloc, 
+		.v_anchors = new_llist(alloc) };
+}
 
 /* adj_list_add_vertex: adds a new vertex to this adj_list */
 v_anchor_t * adj_list_add_vertex (adj_list_t *, vertex_t);

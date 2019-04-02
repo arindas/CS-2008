@@ -4,6 +4,8 @@
 #include <util.h>
 #include <alloc.h>
 
+#define NULL (void *)0
+
 /* linked list node */
 typedef struct _llnode {
 	void 			*data;
@@ -24,6 +26,11 @@ typedef struct {
 	/* allocator */
 	allocator_t	alloc;
 } llist_t;
+
+llist_t new_llist (allocator_t alloc) {
+	return (llist_t) {.size = 0, .head = NULL, 
+		.tail = NULL, .alloc = alloc };
+}
 
 /* llnode_add_at_head: constructs a new node from the 
  * given data and adds it to the head of this list */
