@@ -39,6 +39,6 @@ llnode_t * llnode_search (llist_t, void *, compare_fn);
 
 /* llnode_delete: deletes all occurences of the provided data 
  * in the list. It returns the number of nodes deleted. */
-int llnode_delete (llist_t, void *);
+int llnode_delete (llist_t, void *, compare_fn);
 
 #endif
