@@ -41,27 +41,50 @@ llnode_t * llnode_search (llist_t list, void *elem, compare_fn cmp) {
 	return NULL;
 }
 
+static llnode_t *llnode_delete (llist_t list, llnode_t *p) {
+	if (p->prev) p->prev->next = p->next;
+	else list.head = p->next;
+
+	if (p->next) p->next->prev = p->prev;
+	else list.tail = p->prev;
+
+	llnode_t * next = p->next;
+			
+	p->prev = p->next = NULL;
+	list.alloc.free_fn (p);
+
+	return next;
+}
+
 int llnode_delete (llist_t list, void *elem, compare_fn cmp) {
 	int count = 0;
 	
 	for (llnode_t *p = list.start; p;) {
 		
 		if (cmp(elem, p->data) == 0) {
-			if (p->prev) p->prev->next = p->next;
-			else list.head = p->next;
-
-			if (p->next) p->next->prev = p->prev;
-			else list.tail = p->prev;
-
-			llnode_t * next = p->next;
-			
-			p->prev = p->next = NULL;
-			list.alloc.free_fn (p);
-
-			p = next; count++;
+			p = llnode_delete (list, p);
+			count++;
 		} else 
 			p = p->next;
 	}
 
 	return count;
+}
+
+void llnode_add_list_at_tail (llist_t list, llist_t suffix) {
+	if (!suffix->head || !list->tail) return;
+	
+	list->tail->next = suffix->head;
+	suffix->head->prev = list->tail;
+
+	list->tail = suffix->tail;
+}
+	
+void llnode_add_list_at_head (llist_t list, llist_t prefix) {
+	if (!suffix->tail || !list->head) return;
+
+	list->head->prev = prefix->tail;
+	prefix->tail->next = list->head;
+
+	list->head = prefix->head;
 }

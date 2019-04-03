@@ -8,11 +8,9 @@ typedef vertex_t unsigned int;
 
 typedef struct { 
 	/* destination vertex of this edge */
-	vertex_t 	dest;
-	
+	vertex_t 	dest;	
 	/* weight of this edge */
 	double 		weight;	
-
 } edge_t;
 
 /* graph_add_vertex_fn: fn to add a vertex. It returns the mapped 
@@ -25,6 +23,9 @@ void (*graph_add_edge_fn) (void *graph_ctx, vertex_t, edge_t);
 /* graph_get_vertex_repr_fn: fn to return the mapped representation
  * of the vertex in the given graph context */
 void * (*graph_get_vertex_repr_fn) (void *graph_ctx, vertex_t);
+
+/* graph_get_vertex_fn: fn to return vertex from mapped repr */
+vertex_t (*graph_get_vertex_fn) (void *repr);
 
 /* graph_get_adjacency_fn: fn to return the adjacency of this vertex_repr */
 llist (*graph_get_adjacencies_fn) (void *graph_ctx, void *vertex_repr);
@@ -45,6 +46,7 @@ typedef struct {
 	
 	/* query */
 	graph_get_vertex_repr_fn 		get_repr;
+	graph_get_vertex_fn 			get_vertex; 
 	graph_get_adjacencies_fn 		get_adjacencies;
 	
 	graph_get_adjacency_weight_fn 	get_adjacency_weight;

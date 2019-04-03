@@ -40,5 +40,3 @@ void adj_list_add_edge (adj_list_t *adj, vertex_t v, edge_t e) {
 
 	llnode_add_at_tail (src->adj_list, adjacency);
 }
-
-llist_t get_adjacent (v_anchor_t * anch) { return anch->adj_list; }
