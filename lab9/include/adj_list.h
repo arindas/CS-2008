@@ -51,7 +51,7 @@ v_anchor_t * get_anchor (adj_list_t*, vertex_t);
 
 /* get_adjacent: returns the list of adjacencies 
  * associated with this vertex anchor */
-llist_t get_adjacent (v_anchor_t *);
+llist_t get_adjacencies (v_anchor_t *);
 
 void * adj_list_graph_add_vertex (void *graph_ctx, vertex_t v) 
 { return (void *) adj_list_add_vertex ((adj_list_t *) graph_ctx, v); }
@@ -62,8 +62,13 @@ void adj_list_graph_add_edge (void *graph_ctx, vertex_t v, edge_t e)
 void adj_list_graph_get_repr (void *graph_ctx, vertex_t v) 
 { return (void *) get_anchor ((adj_list_t *) graph_ctx, v); }
 
-llist_t adj_graph_get_adjacency (void *vertex_repr) 
+llist_t adj_graph_get_adjacencies (void *vertex_repr) 
 { return get_adjacent ((v_anchor_t *) vertex_repr); }
+
+double adj_graph_get_adjacency_weight (void *adj) 
+{ return ((adj_t) adj)->edge.weight; }
+void * adj_graph_get_adjacency_dest_vertex_repr (void * adj) 
+{ return ((adj_t) adj)->v_anchor; }
 
 /* adj_list_graph: return an implementation 
  * of the graph interface using adj_list_t */
@@ -73,8 +78,11 @@ graph_t adj_list_graph (adj_list_t *adj_l) {
 		.add_edge = adj_list_graph_add_edge,
 		
 		.get_repr = adj_list_graph_get_repr,
-		.get_adjacency = adj_list_graph_get_adjacency
+		.get_adjacencies = adj_list_graph_get_adjacencies,
 		
+		.get_adjacency_weight = adj_graph_get_adjacency_weight,
+		.get_adjacent_vertex_repr = adj_graph_get_adjacency_dest_vertex_repr, 
+
 		.graph_ctx = adj_l 
 	};
 }

@@ -27,17 +27,28 @@ void (*graph_add_edge_fn) (void *graph_ctx, vertex_t, edge_t);
 void * (*graph_get_vertex_repr_fn) (void *graph_ctx, vertex_t);
 
 /* graph_get_adjacency_fn: fn to return the adjacency of this vertex_repr */
-llist (*graph_get_adjacency_fn) (void *graph_ctx, void *vertex_repr);
+llist (*graph_get_adjacencies_fn) (void *graph_ctx, void *vertex_repr);
+
+/* graph_get_adjacency_weight_fn: fn to return 
+ * the weight associated with this adjacency */
+double (*graph_get_adjacency_weight_fn) (void *adj);
+
+/* graph_get_dest_vertex_repr_fn: fn to return the mapped repr 
+ * of the dest vertex assocatied with this adjacency */
+void * (*graph_get_dest_vertex_repr_fn) (void *adj);
 
 /* the graph interface */
 typedef struct {
 	/* insert */
-	graph_add_vertex_fn 		add_vertex;
-	graph_add_edge_fn 			add_edge;
+	graph_add_vertex_fn 			add_vertex;
+	graph_add_edge_fn 				add_edge;
 	
 	/* query */
-	graph_get_vertex_repr_fn 	get_repr;
-	graph_get_adjacency_fn 		get_adjacency;
+	graph_get_vertex_repr_fn 		get_repr;
+	graph_get_adjacencies_fn 		get_adjacencies;
+	
+	graph_get_adjacency_weight_fn 	get_adjacency_weight;
+	graph_get_dest_vertex_repr_fn 	get_adjacent_vertex_repr;
 	
 	/* graph context */
 	void 						*graph_ctx;
