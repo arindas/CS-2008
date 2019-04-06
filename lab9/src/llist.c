@@ -79,7 +79,8 @@ static void * search (collection_t this, void *element,
 		int (*is_equal) (void *, void *)) {
 
 	llist_t * l = this.collection_ctx;
-	return llnode_search (l, element, is_equal);
+	llnode_t * node = llnode_search (l, element, is_equal);
+	return node? node->data: NULL;
 }
 
 static int remove (collection_t this, void * element, 
