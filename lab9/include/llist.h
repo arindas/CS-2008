@@ -29,9 +29,13 @@ typedef struct _llist {
 	allocator_t	allocator;
 } llist_t;
 
-llist_t new_llist (allocator_t alloc) {
-	return (llist_t) {.size = 0, .head = NULL, 
+llist_t * new_llist (allocator_t alloc) {
+	llist_t * l = alloc.alloc (sizeof (llist_t));
+	
+	*l = (llist_t) {.size = 0, .head = NULL, 
 		.tail = NULL, .allocator = alloc };
+
+	return l;
 }
 
 /* llnode_add_at_head: constructs a new node from the 

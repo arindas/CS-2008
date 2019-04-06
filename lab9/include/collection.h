@@ -9,7 +9,7 @@ typedef struct _collection {
 	int 	(* remove) (struct _collection, 
 			void *element, int (*is_equal) (void *, void *));
 
-	void 	(* add) (struct _collection, void *element);
+	void *	(* add) (struct _collection, void *element);
 
 	void 	(* for_each) (struct _collection, 
 			void (* action) (void *));

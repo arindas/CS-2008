@@ -70,4 +70,57 @@ void llnode_add_list (llist_t *list, llist_t *suffix) {
 	list->tail = suffix->tail;
 }
 
-void llnode_t 
+void llnode_for_each (llist_t * l, void (* action) (void *)) {
+	for (llnode_t *p = l->head; p; p = p->next) 
+		action (p->data);
+}
+
+static void * search (collection_t this, void *element, 
+		int (*is_equal) (void *, void *)) {
+
+	llist_t * l = this.collection_ctx;
+	return llnode_search (l, element, is_equal);
+}
+
+static int remove (collection_t this, void * element, 
+		int (*is_equal) (void *, void *)) {
+	
+	llist_t * l = this.collection_ctx;
+	return llnode_delete (l, element, is_equal);
+}
+
+static void * add (collection_t this, void * element) {
+	
+	llist_t * l = this.collection_ctx;
+	return llnode_add_at_tail (l, element);
+}
+
+static void for_each (collection_t this, void (* action) (void *)) {
+	
+	llist_t * l = this.collection_ctx;
+	llnode_for_each (l, action);
+}
+
+static void add_all (collection_t this, collection_t that) {
+	
+	llist_t * l = this.collection_ctx;
+
+	if (that.collection_id == LIST_ID) {
+		llist_t * m = that.collection_ctx;
+		llnode_add_list (l, m);
+	} else std_add_all (this, that);
+}
+
+collection_t get_collection (llist_t *list) {
+	return (collection_t) {
+		.search 		= search,
+		.remove 		= remove,
+		.add 			= add,
+		.for_each 		= for_each,
+		.add_all 		= add_all,
+		.collection_id  = LIST_ID,
+		.collection_ctx = list 
+	};
+}
+
+
