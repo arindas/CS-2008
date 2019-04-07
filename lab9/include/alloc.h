@@ -14,4 +14,11 @@ typedef struct {
 	alloc_fn 	alloc;
 } allocator_t;
 
+allocator_t get_std_allocator () {
+	return (allocator_t) {
+		.free = std_free_fn, 
+		.alloc = std_alloc_fn
+	};
+}
+
 #endif

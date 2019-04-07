@@ -7,7 +7,7 @@ llnode_t * llnode_add_at_head (llist_t *l, void *elem) {
 
 	*node = (llnode_t) {.prev = NULL, .next = l->head, .data = elem};
 	llnode_t ** anchor = l->head? &l->head->prev: &l->tail;
-	l->head = *anchor = node; return node;
+	l->head = *anchor = node; l->size++; return node;
 }
 
 llnode_t * llnode_add_at_tail (llist_t *l, void *elem) {
@@ -17,7 +17,7 @@ llnode_t * llnode_add_at_tail (llist_t *l, void *elem) {
 	
 	*node = (llnode_t) {.prev = l->tail, .next = NULL, .data = elem};
 	llnode_t ** anchor = l->tail? &l->tail->next: &l->head;
-	l->tail = *anchor = node; return node;
+	l->tail = *anchor = node; l->size++; return node;
 }
 
 llnode_t * llnode_search (llist_t *l, void *elem, 
@@ -58,7 +58,7 @@ int llnode_delete (llist_t *l, void *elem,
 			p = &(*p)->next;
 	}
 
-	return count;
+	l->size -= count; return count;
 }
 
 void llnode_add_list (llist_t *list, llist_t *suffix) {
@@ -67,7 +67,8 @@ void llnode_add_list (llist_t *list, llist_t *suffix) {
 	list->tail->next = suffix->head;
 	suffix->head->prev = list->tail;
 
-	list->tail = suffix->tail;
+	list->tail = suffix->tail; 
+	list->size += suffix->size;
 }
 
 void llnode_for_each (llist_t * l, void (* action) (void *)) {
@@ -112,6 +113,9 @@ static void add_all (collection_t this, collection_t that) {
 	} else std_add_all (this, that);
 }
 
+int size (collection_t this) 
+{ return ((llist_t *) this.collection_ctx)->size; }
+
 collection_t get_collection (llist_t *list) {
 	return (collection_t) {
 		.search 		= search,
@@ -119,6 +123,7 @@ collection_t get_collection (llist_t *list) {
 		.add 			= add,
 		.for_each 		= for_each,
 		.add_all 		= add_all,
+		.size 			= size,
 		.collection_id  = LIST_ID,
 		.collection_ctx = list 
 	};

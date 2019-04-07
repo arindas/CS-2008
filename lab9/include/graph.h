@@ -1,6 +1,8 @@
 #ifndef graph_h
 #define graph_h
 
+#include <collection.h>
+
 typedef unsigned int vertex_id;
 
 typedef struct {
@@ -15,6 +17,16 @@ typedef struct {
 
 typedef struct {
 	collection_t vertices;
+} graph_t;
+
+void graph_add_vertex (graph_t G, vertex_t * V) 
+{ G.vertices.add (G.vertices, V); }
+
+void graph_add_edge (graph_t G, 
+		vertex_t * V, edge_t * E) { 
+	
+	G.vertices.add (G.vertices, V);
+	V->edges.add (V->edges, E); 
 }
 
 #endif
