@@ -9,7 +9,7 @@ void DFS (vertex_t V, void (* action) (vertex_t)) {
 	llnode_add_at_head (list, &V);
 
 	while (list->size != 0) {
-		vertex_t * u = llnode_pop_head (list)->data;
+		vertex_t * u = llist_pop_head (list);
 		
 		action (*u); // visit u
 
@@ -25,7 +25,7 @@ void BFS (vertex_t V, void (* action) (vertex_t)) {
 	llnode_add_at_tail (list, &V);
 
 	while (list->size != 0) {
-		vertex_t * u = llnode_pop_head (list)->data;
+		vertex_t * u = llist_pop_head (list);
 
 		action (*u); // visit u
 

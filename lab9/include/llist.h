@@ -50,9 +50,21 @@ llnode_t * llnode_add_at_tail (llist_t *, void *);
 llnode_t * llnode_pop_head (llist_t *l) 
 { llnode_t *p = l->head; l->head = p->next; return p; }
 
+void * llist_pop_head (llist_t *l) { 
+	llnode_t *p = llnode_pop_head (l);
+	void * data = p->data; 
+	l->allocator.free (p); return data;
+}
+
 /* llnode_pop_tail: pops the tail of this list */
 llnode_t * llnode_pop_tail (llist_t *l)
 { llnode_t *p = l->tail; l->tail = p->prev; return p; }
+
+void * llist_pop_tail (llist_t *l) {
+	llnode_t *p = llnode_pop_tail (l);
+	void * data = p->data;
+	l->allocator.free (p); return data;
+}
 
 /* llnode_search: searches for the given data in the list and returns 
  * the node associated with it. If not found NULL is returned */
