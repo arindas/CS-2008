@@ -2,6 +2,8 @@
 #define graph_h
 
 #include <collection.h>
+#include <llist.h>
+#include <allocator.h>
 
 typedef unsigned int vertex_id;
 
@@ -12,21 +14,30 @@ typedef struct {
 
 typedef struct {
 	double 		weight;
-	vertex_t 	dest;
+	vertex_t * 	dest;
 } edge_t;
 
-typedef struct {
-	collection_t vertices;
+typedef struct _graph {
+	allocator_t		allocator;
+
+	vertex_t * 		(* new_vertex) (
+			struct _graph, vertex_id);
+	
+	edge_t * 		(* new_edge) (
+			struct _graph, vertex_id dst, 
+			double weight );
+	
+	collection_t 	vertices;
 } graph_t;
 
-void graph_add_vertex (graph_t G, vertex_t * V) 
-{ G.vertices.add (G.vertices, V); }
+vertex_t * std_new_vertex (graph_t, vertex_id);
+edge_t * std_new_edge (graph_t, vertex_id, 
+		vertex_id, double);
 
-void graph_add_edge (graph_t G, 
-		vertex_t * V, edge_t * E) { 
-	
-	G.vertices.add (G.vertices, V);
-	V->edges.add (V->edges, E); 
-}
+vertex_t * get_vertex (graph_t, vertex_id);
+vertex_t * graph_add_vertex (graph_t, vertex_id);
+
+edge_t * graph_add_edge (graph_t, vertex_id, 
+		vertex_id, double);
 
 #endif

@@ -94,7 +94,8 @@ static int remove (collection_t this, void * element,
 static void * add (collection_t this, void * element) {
 	
 	llist_t * l = this.collection_ctx;
-	return llnode_add_at_tail (l, element);
+	return (llnode_t *) (llnode_add_at_tail (
+				l, element))->data;
 }
 
 static void for_each (collection_t this, void (* action) (void *)) {
@@ -116,7 +117,7 @@ static void add_all (collection_t this, collection_t that) {
 int size (collection_t this) 
 { return ((llist_t *) this.collection_ctx)->size; }
 
-collection_t get_collection (llist_t *list) {
+collection_t llist_get_collection (llist_t *list) {
 	return (collection_t) {
 		.search 		= search,
 		.remove 		= remove,

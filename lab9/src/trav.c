@@ -14,7 +14,7 @@ void DFS (vertex_t V, void (* action) (vertex_t)) {
 		action (*u); // visit u
 
 		void add_neighbour (void * e) 
-		{ llnode_add_at_head (list, &((edge_t *)e)->dest); }
+		{ llnode_add_at_head (list, ((edge_t *)e)->dest); }
 
 		u->edges.for_each (u->edges, add_neighbour);
 	}
@@ -30,7 +30,7 @@ void BFS (vertex_t V, void (* action) (vertex_t)) {
 		action (*u); // visit u
 
 		void add_neighbour (void * e)
-		{ llnode_add_at_tail (list, &((edge_t *)e)->dest); }
+		{ llnode_add_at_tail (list, ((edge_t *)e)->dest); }
 
 		u->edges.for_each (u->edges, add_neighbour);
 	}

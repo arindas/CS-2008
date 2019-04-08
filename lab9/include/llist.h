@@ -81,6 +81,6 @@ void llnode_add_list (llist_t *list, llist_t *suffix);
 
 void llnode_for_each (llist_t *, void (*) (void *));
 
-collection_t get_collection (llist_t *list);
+collection_t llist_get_collection (llist_t *list);
 
 #endif
