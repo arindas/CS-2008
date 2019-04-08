@@ -28,4 +28,4 @@ We have some network nodes on a 2D cartesian plane. <br/>
 
 #### Objective
 * Connect all the *network nodes* to a network with the *minimum possible packet exchange cost*.
-* For this purpose we construct a **minimum spanning tree ** with the vertices being the *network nodes* and the edges being the *network lines*.
+* For this purpose we construct a **minimum spanning tree** with the vertices being the *network nodes* and the edges being the *network lines*.
