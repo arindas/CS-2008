@@ -3,7 +3,7 @@
 
 #include <collection.h>
 #include <llist.h>
-#include <allocator.h>
+#include <alloc.h>
 
 typedef unsigned int vertex_id;
 
@@ -31,8 +31,7 @@ typedef struct _graph {
 } graph_t;
 
 vertex_t * std_new_vertex (graph_t, vertex_id);
-edge_t * std_new_edge (graph_t, vertex_id, 
-		vertex_id, double);
+edge_t * std_new_edge (graph_t, vertex_id, double);
 
 vertex_t * get_vertex (graph_t, vertex_id);
 vertex_t * graph_add_vertex (graph_t, vertex_id);
