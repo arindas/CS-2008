@@ -11,6 +11,8 @@ typedef struct _collection {
 
 	void *	(* add) (struct _collection, void *element);
 
+	void *  (* pop) (struct _collection);
+
 	void 	(* for_each) (struct _collection, 
 			void (* action) (void *));
 

@@ -117,11 +117,17 @@ static void add_all (collection_t this, collection_t that) {
 int size (collection_t this) 
 { return ((llist_t *) this.collection_ctx)->size; }
 
+void * pop (collection_t this) {
+	llist_t * l = this.collection_ctx;
+	return llist_pop_head (l);
+} 
+
 collection_t llist_get_collection (llist_t *list) {
 	return (collection_t) {
 		.search 		= search,
 		.remove 		= remove,
 		.add 			= add,
+		.pop			= pop,
 		.for_each 		= for_each,
 		.add_all 		= add_all,
 		.size 			= size,

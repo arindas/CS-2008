@@ -1,8 +1,7 @@
 #include <heap.h>
 #include <alloc.h>
 
-#include <stdlib.h>
-#include <errno.h>
+#include <stddef.h>
 
 #define cmp(i, j, h) h.is_greater ( \
 		h.compare_ctx, h.buf[(i)], h.buf[(j)]) 
@@ -11,6 +10,21 @@
 
 static void swap (void ** buf, int i, int j) 
 { void * t = buf[i]; buf[i] = buf[j]; buf[j] = t; }
+
+heap_t * get_heap (allocator_t a, size_t cap, 
+		void * cmp_ctx, is_greater_fn is_greater) {
+	
+	heap_t * 	h 	= a.alloc (sizeof (heap_t));
+	void ** 	buf = a.alloc (sizeof (void *) * cap);
+
+	if (!h || !buf) return NULL;
+
+	*h = (heap_t) { .size = 0, .compare_ctx = cmp_ctx, 
+		.is_greater = is_greater, .buf = buf, 
+		.capacity = cap, .allocator = a };
+
+	return h;
+}
 
 int heapify_bup (heap_t h, int i) {
 	if (out_of_bounds(i, h.size)) return -1;
@@ -71,7 +85,6 @@ void * heap_extract (heap_t h) {
 	return h.buf[h.size];
 }
 
-
 void heap_build (heap_t h) {
 
 	// 1st non leaf node
@@ -80,3 +93,5 @@ void heap_build (heap_t h) {
 	// for all non leaf nodes heapify down
 	while (i >= 0) heapify_tdn (h, i--);
 }
+
+

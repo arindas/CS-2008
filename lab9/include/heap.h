@@ -4,7 +4,7 @@
 #include <collec.h>
 #include <alloc.h>
 
-#include <stdlib.h>
+#include <stddef.h>
 
 #define PARENT(i) ((i)/2)
 
@@ -12,17 +12,17 @@
 
 #define RCHILD(i) (2*(i))
 
-typedef struct { 
-	int 	size;
-	
-	void * 	compare_ctx;
-	int 	(* is_greater) ( 
-			void * cmp_ctx, 
-			void * A, void * B);
+typedef int (* is_greater_fn) (void * cmp_ctx, void *, void *);
 
-	void ** 	buf;
-	int 		capacity;
-	allocator_t allocator;
+typedef struct { 
+	size_t			size;
+	
+	void ** 		buf;
+	size_t 			capacity;
+	allocator_t 	allocator;
+
+	void * 			compare_ctx;
+	is_greater_fn 	is_greater;
 } heap_t;
 
 int heapify_bup (heap_t, int i);
@@ -33,14 +33,10 @@ int heap_insert (heap_t, void * key);
 
 void * heap_extract (heap_t);
 
-// TODO: 
-void * heap_extract_at (heap_t, int index);
-
-// TODO:
-int heap_search (heap_t, void *, 
-		int (*is_equal) (void *, void *));
-
 void heap_build (heap_t);
+
+heap_t * get_heap (allocator_t, size_t cap, 
+		void * cmp_ctx, is_greater_fn);
 
 collection_t heap_get_collection (heap_t *);
 
