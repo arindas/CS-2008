@@ -2,7 +2,7 @@
 #define llist_h
 
 #include <alloc.h>
-#include <collection.h>
+#include <collec.h>
 
 #define LIST_ID 1000
 

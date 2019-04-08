@@ -1,5 +1,5 @@
 #include <graph.h>
-#include <collection.h>
+#include <collec.h>
 #include <llist.h>
 #include <alloc.h>
 

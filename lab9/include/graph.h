@@ -1,7 +1,7 @@
 #ifndef graph_h
 #define graph_h
 
-#include <collection.h>
+#include <collec.h>
 #include <llist.h>
 #include <alloc.h>
 
