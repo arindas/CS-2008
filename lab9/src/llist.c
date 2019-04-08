@@ -10,6 +10,15 @@ llnode_t * llnode_add_at_head (llist_t *l, void *elem) {
 	l->head = *anchor = node; l->size++; return node;
 }
 
+llnode_t * llnode_search (llist_t *l, void *elem, 
+		int (*is_equal)(void *, void *)) {
+	
+	for (llnode_t *p = l->head; p; p = p->next) 
+		if (is_equal(p->data, elem)) return p;
+
+	return NULL;
+}
+
 llnode_t * llnode_add_at_tail (llist_t *l, void *elem) {
 	llnode_t * node = l->allocator.alloc (sizeof (llnode_t));
 	
@@ -18,15 +27,6 @@ llnode_t * llnode_add_at_tail (llist_t *l, void *elem) {
 	*node = (llnode_t) {.prev = l->tail, .next = NULL, .data = elem};
 	llnode_t ** anchor = l->tail? &l->tail->next: &l->head;
 	l->tail = *anchor = node; l->size++; return node;
-}
-
-llnode_t * llnode_search (llist_t *l, void *elem, 
-		int (*is_equal)(void *, void *)) {
-	
-	for (llnode_t *p = l->head; p; p = p->next) 
-		if (is_equal(p->data, elem)) return p;
-
-	return NULL;
 }
 
 static llnode_t **_llnode_delete (llnode_t ** anchor, 

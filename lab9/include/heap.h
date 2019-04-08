@@ -37,4 +37,6 @@ void build_heap (heap_t);
 void swap (void ** buf, int i, int j) 
 { void * t = buf[i]; buf[i] = buf[j]; buf[j] = t;}
 
+collection_t heap_get_collection (heap_t *);
+
 #endif
