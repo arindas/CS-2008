@@ -13,7 +13,7 @@
 * Lab 6 : Implementation of **Priority Queue** using **Binary Heap**
 * Lab 7 *Dynamic Programming Approach*
 	* **Longest Common Subsequence** Problem
-	* **Optimal Parentehis : Matrix Chain Multiplication** Problem
+	* **Optimal Parenthesization : Matrix Chain Multiplication** Problem
 * Lab 8 *Greedy Algorithms*
 	* Activity Selection
 	* Job Sequencing
