@@ -86,12 +86,92 @@ void * heap_extract (heap_t h) {
 }
 
 void heap_build (heap_t h) {
-
 	// 1st non leaf node
 	int i = h.size / 2 - 1; 
-	
 	// for all non leaf nodes heapify down
 	while (i >= 0) heapify_tdn (h, i--);
 }
 
+int heap_change_key (heap_t h, int index, void * key) { 
+	if (out_of_bounds (index, h.size))
+		return -1;
+	
+	h.buf[index] = key; 
+	return heapify_tdn (h, heapify_bup (h, index)); 
+}
 
+void * heap_extract_from (heap_t h, int index) {
+	// check for underflow or out of bounds
+	if (h.size == 0 || out_of_bounds(index, h.size)) 
+		return NULL;
+	
+	// save old key in a temp. var
+	void * old_key = h.buf[index];
+	// change key at index to key at last pos.
+	heap_change_key (h, index, h.buf[--h.size]);
+	
+	return old_key;
+}
+
+static int _search (heap_t * h, void * key, 
+		int (* is_equal) (void *, void *)) {
+	
+	int i = h->size; while (i-- > 0) 
+	{ if (is_equal (h->buf[i], key)) return i; }
+	
+	return -1;
+}
+
+static void * search (collection_t this, void * key,
+		int (* is_equal) (void *, void *)) {
+
+	heap_t * h = this.collection_ctx;
+
+	int i = _search (h, key, is_equal);
+	return i > -1? h->buf[i]: NULL;  
+}
+
+static int remove (collection_t this, void * key,
+		int (* is_equal) (void *, void *)) {
+
+	heap_t * h = this.collection_ctx;
+	int i = _search (h, key, is_equal);
+	return heap_extract_from (*h, i) != NULL;
+}
+
+static void * add (collection_t this, void * element) {
+	heap_t * h = this.collection_ctx;
+	int index = heap_insert (*h, element);
+	return index > -1? h->buf[index]: NULL;
+}
+
+static void * pop (collection_t this) {
+	heap_t * h = this.collection_ctx;
+	return heap_extract (*h);
+}
+
+static void for_each (collection_t this,
+		void (* action) (void *)) {
+	heap_t * h = this.collection_ctx;
+	int i = h->size; while (i-- > 0)
+	{ action (h->buf[i]); }
+}
+
+static int size (collection_t this) {
+	heap_t * h = this.collection_ctx;
+	return h->size;
+}
+
+collection_t heap_get_collection (heap_t * h) {
+	return (collection_t) {
+		.search 		= search,
+		.remove 		= remove,
+		.add 			= add,
+		.pop			= pop,
+		.for_each 		= for_each,
+		.add_all 		= std_add_all,
+		.size 			= size,
+		.collection_id  = HEAP_ID,
+		.collection_ctx = h 
+	};
+} 

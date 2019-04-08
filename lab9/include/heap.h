@@ -6,6 +6,8 @@
 
 #include <stddef.h>
 
+#define HEAP_ID 1001
+
 #define PARENT(i) ((i)/2)
 
 #define LCHILD(i) (2*(i)+1)
@@ -32,6 +34,9 @@ int heapify_tdn (heap_t, int i);
 int heap_insert (heap_t, void * key);
 
 void * heap_extract (heap_t);
+
+int heap_change_key (heap_t h, 
+		int index, void * key);
 
 void heap_build (heap_t);
 

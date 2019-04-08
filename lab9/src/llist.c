@@ -114,10 +114,10 @@ static void add_all (collection_t this, collection_t that) {
 	} else std_add_all (this, that);
 }
 
-int size (collection_t this) 
+static int size (collection_t this) 
 { return ((llist_t *) this.collection_ctx)->size; }
 
-void * pop (collection_t this) {
+static void * pop (collection_t this) {
 	llist_t * l = this.collection_ctx;
 	return llist_pop_head (l);
 } 
