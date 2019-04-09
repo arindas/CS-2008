@@ -1,81 +1,40 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-void merge(int *a, int l, int m, int r){
-    int i, j, k;
-    int n1 = m - l + 1;
-    int n2 =  r - m;
-
-    int L[n1], R[n2];
-
-    for (i = 0; i < n1; i++)
-        L[i] = a[l + i];
-    for (j = 0; j < n2; j++)
-        R[j] = a[m + 1+ j];
-  
-    
-    i = 0; 
-    j = 0; 
-    k = l; 
-    while (i < n1 && j < n2) 
-    { 
-        if (L[i] <= R[j]) 
-        { 
-            a[k] = L[i]; 
-            i++; k++; 
-        } 
-        else
-        { 
-            a[k] = R[j]; 
-            j++; k++;
-        } 
-        k++; 
-    } 
-  
-
-    while (i < n1)
-    {
-        a[k] = L[i];
-        i++;
-        k++;
-    }
-
-
-    while (j < n2)
-    {
-        a[k] = R[j];
-        j++;
-        k++;
-    }
-}
-void mergeSort(int *a, int l, int r){
-    if (l < r)
-    {
-        int m = l+(r-l)/2; 
-  
-        // Sort first and second halves 
-        mergeSort(a, l, m); 
-        mergeSort(a, m+1, r); 
-  
-        merge(a, l, m, r); 
-    } 
+int partition_asc(int * arr, int p ,int r)
+{
+	int x = arr[r];
+	int i = p-1;
+	int temp;
+	for(int j=p;j<=r-1;j++)
+	{
+		if (arr[j]<=x)
+		{
+			i = i+1;
+			temp = arr[i];
+			arr[i] = arr[j];
+			arr[j] = temp;
+		}
+	}
+	i= i+1;
+	temp = arr[i];
+	arr[i] = arr[r];
+	arr[r] = temp;
+	return i;
 }
 
+void quicksort_asc(int * arr,int p, int r)
+{
+	if(p<r)
+	{
+		int q = partition_asc(arr,p,r);
+		quicksort_asc(arr,p,q-1);
+		quicksort_asc(arr,q+1,r);
+	}
+}
 void allot(int **t, int *p,int m, int n){
-    int j=0,k=0;
-    if(m>=n){
         for(int i=0; i<n; i++){
-            t[i][j]=p[i];
-        }
-    }
-    else{
-        for(int i=0; i<n; i++){
-            t[k][j]=p[i];
-            k++;
-            if(k==m){
-                j++; k=0;
-                }
-            }
+            t[i%m][i/m]=p[i];
         }
 }
 
@@ -97,7 +56,7 @@ void main(){
 
     //Initializing tape lengths to 0.
     for(int i=0;i<m;i++){
-        for(int j=0; j<(n/m+1); j++)
+        for(int j=0; j<((n/m)+1); j++)
             t[i][j]=0;
     }
 
@@ -105,13 +64,9 @@ void main(){
     printf("Enter program lengths : \n");
     for(int i=0;i<n;i++){
         scanf("%d",&p[i]);
-        if(p[i]<=0){
-            printf("Enter program length again (Negatives or zeros not allowed) : \n");
-            scanf("%d",&p[i]);
-        }
     }
 
-    mergeSort(p,0,n-1);
+    quicksort_asc(p,0,n-1);
 
     allot(t,p,m,n); //alloting program lengths to tapes
 
@@ -125,6 +80,3 @@ void main(){
         }
     }
 
-
-
-}
