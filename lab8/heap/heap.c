@@ -72,7 +72,7 @@ void build_heap (int *buf, heap_ctx_t h) {
 	// 1st non leaf node
 	int i = h.size / 2 - 1; 
 	
-	// for all non leaf nodes heapify up
+	// for all non leaf nodes heapify down
 	while (i >= 0) heapify_tdn (h, buf, i--);
 }
 

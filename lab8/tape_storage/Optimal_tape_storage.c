@@ -22,12 +22,12 @@ void merge(int *a, int l, int m, int r){
         if (L[i] <= R[j]) 
         { 
             a[k] = L[i]; 
-            i++; 
+            i++; k++; 
         } 
         else
         { 
             a[k] = R[j]; 
-            j++; 
+            j++; k++;
         } 
         k++; 
     } 
@@ -120,7 +120,7 @@ void main(){
 
         printf("\nTape no %d : ",i+1);
 
-        for(int j=0; t[i][j]!=0; j++){
+        for(int j=0; j <= n/m && t[i][j]!=0; j++){
             printf("%d ",t[i][j]);
         }
     }

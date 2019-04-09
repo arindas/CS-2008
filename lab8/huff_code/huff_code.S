@@ -287,41 +287,39 @@ void fill_code_map (hcode_ctx_t t, getc_fn getc) {
  246:	48 8b 6c 24 20       	mov    0x20(%rsp),%rbp
 	if (!t.code_map || !t.char_map)
  24b:	48 85 ed             	test   %rbp,%rbp
- 24e:	74 2f                	je     27f <fill_code_map+0x3f>
+ 24e:	74 2a                	je     27a <fill_code_map+0x3a>
  250:	48 83 7c 24 28 00    	cmpq   $0x0,0x28(%rsp)
  256:	48 89 fb             	mov    %rdi,%rbx
- 259:	75 1b                	jne    276 <fill_code_map+0x36>
- 25b:	eb 22                	jmp    27f <fill_code_map+0x3f>
+ 259:	75 16                	jne    271 <fill_code_map+0x31>
+ 25b:	eb 1d                	jmp    27a <fill_code_map+0x3a>
  25d:	0f 1f 00             	nopl   (%rax)
-		t.code_map[c % N_CHAR_SET].freq++;	
+		t.code_map[c % t.charset_len].freq++;	
  260:	99                   	cltd   
- 261:	c1 ea 18             	shr    $0x18,%edx
- 264:	01 d0                	add    %edx,%eax
- 266:	0f b6 c0             	movzbl %al,%eax
- 269:	29 d0                	sub    %edx,%eax
- 26b:	48 98                	cltq   
- 26d:	48 c1 e0 04          	shl    $0x4,%rax
- 271:	83 44 05 00 01       	addl   $0x1,0x0(%rbp,%rax,1)
+ 261:	f7 7c 24 30          	idivl  0x30(%rsp)
+ 265:	48 63 d2             	movslq %edx,%rdx
+ 268:	48 c1 e2 04          	shl    $0x4,%rdx
+ 26c:	83 44 15 00 01       	addl   $0x1,0x0(%rbp,%rdx,1)
 	int c; while ((c = getc()) != -1) 
- 276:	31 c0                	xor    %eax,%eax
- 278:	ff d3                	callq  *%rbx
- 27a:	83 f8 ff             	cmp    $0xffffffff,%eax
- 27d:	75 e1                	jne    260 <fill_code_map+0x20>
+ 271:	31 c0                	xor    %eax,%eax
+ 273:	ff d3                	callq  *%rbx
+ 275:	83 f8 ff             	cmp    $0xffffffff,%eax
+ 278:	75 e6                	jne    260 <fill_code_map+0x20>
 }
- 27f:	48 83 c4 08          	add    $0x8,%rsp
- 283:	5b                   	pop    %rbx
- 284:	5d                   	pop    %rbp
- 285:	c3                   	retq   
- 286:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)
- 28d:	00 00 00 
+ 27a:	48 83 c4 08          	add    $0x8,%rsp
+ 27e:	5b                   	pop    %rbx
+ 27f:	5d                   	pop    %rbp
+ 280:	c3                   	retq   
+ 281:	66 66 2e 0f 1f 84 00 	data16 nopw %cs:0x0(%rax,%rax,1)
+ 288:	00 00 00 00 
+ 28c:	0f 1f 40 00          	nopl   0x0(%rax)
 
 0000000000000290 <prune_hcode_ctx>:
-void prune_hcode_ctx (hcode_ctx_t t) {
- 290:	8b 54 24 1c          	mov    0x1c(%rsp),%edx
+	while (++i < t.charset_len) {
+ 290:	8b 54 24 18          	mov    0x18(%rsp),%edx
  294:	4c 8b 54 24 10       	mov    0x10(%rsp),%r10
 		int f = t.code_map[t.char_map[i]].freq;
  299:	4c 8b 44 24 08       	mov    0x8(%rsp),%r8
-	while (++i < t.n_chars) {
+	while (++i < t.charset_len) {
  29e:	85 d2                	test   %edx,%edx
  2a0:	7e 39                	jle    2db <prune_hcode_ctx+0x4b>
  2a2:	83 ea 01             	sub    $0x1,%edx
@@ -345,7 +343,7 @@ void prune_hcode_ctx (hcode_ctx_t t) {
  2ce:	89 38                	mov    %edi,(%rax)
  2d0:	89 0a                	mov    %ecx,(%rdx)
  2d2:	48 83 c0 04          	add    $0x4,%rax
-	while (++i < t.n_chars) {
+	while (++i < t.charset_len) {
  2d6:	4c 39 c8             	cmp    %r9,%rax
  2d9:	75 d5                	jne    2b0 <prune_hcode_ctx+0x20>
 }

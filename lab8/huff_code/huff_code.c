@@ -26,7 +26,7 @@ hcode_ctx_t hcode_ctx (int charset_len, int ctx_capacity) {
 		errno = ENOMEM; 
 	else { 
 		t.charset_len = charset_len;
-		t.n_chars = t.charset_len; 
+		t.n_chars = 0; // chars reg. 
 		t.ctx_capacity = ctx_capacity; 
 	}
 
@@ -44,13 +44,13 @@ void fill_code_map (hcode_ctx_t t, getc_fn getc) {
 		return;
 	
 	int c; while ((c = getc()) != -1) 
-		t.code_map[c % N_CHAR_SET].freq++;	
+		t.code_map[c % t.charset_len].freq++;	
 }
 
 void prune_hcode_ctx (hcode_ctx_t t) {
 	int i = -1, p = 0;
 
-	while (++i < t.n_chars) {
+	while (++i < t.charset_len) {
 		int f = t.code_map[t.char_map[i]].freq;
 		if (f > 0) swap(t.char_map, i, p++);
 	}
@@ -68,7 +68,7 @@ hcode_t * gen_huffman_tree (hcode_ctx_t t) {
 
 	build_heap (t.char_map, heap_ctx);
 
-	int c = N_CHAR_SET, i = t.n_chars;
+	int c = t.charset_len, i = t.n_chars;
 
 	int *root = NULL;
 
@@ -88,7 +88,7 @@ hcode_t * gen_huffman_tree (hcode_ctx_t t) {
 		insert (heap_ctx, t.char_map, c++);
 	}
 
-	root = extract (heap_ctx, t.char_map);
+	if (!root) root = extract (heap_ctx, t.char_map);
 
 	return root? &t.code_map[*root]: NULL;
 }
