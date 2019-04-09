@@ -3,9 +3,19 @@
 #include <llist.h>
 #include <alloc.h>
 
+static int cmp_edges (void * A, void * B) {
+	edge_t * eA = A, * eB = B;
+
+	return eA->dest->id != eB->dest->id? 
+		eA->dest->id - eB->dest->id: 
+		eA->weight - eB->weight;
+}
+
 vertex_t * std_new_vertex (graph_t G, vertex_id vid) {
+	
+	
 	llist_t * list = new_llist (G.allocator);
-	collection_t edges = llist_get_collection (list);
+	collection_t edges = llist_get_collection (list, cmp_edges);
 	
 	vertex_t * v = G.allocator.alloc (sizeof (vertex_t));
 	*v = (vertex_t) {.id = vid, .edges = edges}; 
@@ -24,11 +34,9 @@ edge_t * std_new_edge (graph_t G, vertex_id dst, double weight) {
 
 
 vertex_t * get_vertex (graph_t G, vertex_id vid) {
-	int is_equal (void * v, void * vid) 
-	{ return ((vertex_t *)v)->id == *(vertex_id *)vid; }
-
-	return G.vertices.search (
-			G.vertices, &vid, is_equal);
+	
+	vertex_t v = (vertex_t) {.id = vid};
+	return G.vertices.search (G.vertices, &v);
 }
 
 

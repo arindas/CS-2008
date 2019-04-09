@@ -39,4 +39,7 @@ vertex_t * graph_add_vertex (graph_t, vertex_id);
 edge_t * graph_add_edge (graph_t, vertex_id, 
 		vertex_id, double);
 
+int vertex_compare (void * A, void * B) 
+{ vertex_t * vA = A, * vB = B; return vA->id - vB->id; }
+
 #endif

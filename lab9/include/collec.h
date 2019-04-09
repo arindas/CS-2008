@@ -1,13 +1,13 @@
 #ifndef collection_h
 #define collection_h 
 
+typedef int (* compare_fn) (void *, void *);
+
 typedef struct _collection {
 	
-	void * 	(* search) (struct _collection, 
-			void *element, int (*is_equal) (void *, void *)); 
+	void * 	(* search) (struct _collection, void *element); 
 
-	int 	(* remove) (struct _collection, 
-			void *element, int (*is_equal) (void *, void *));
+	int 	(* remove) (struct _collection, void *element);
 
 	void *	(* add) (struct _collection, void *element);
 
@@ -22,6 +22,8 @@ typedef struct _collection {
 	
 	int 	collection_id;
 	void * 	collection_ctx;
+	
+	compare_fn compare;
 
 } collection_t;
 
