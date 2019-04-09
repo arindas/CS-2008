@@ -20,9 +20,8 @@
 	* Magnetic Tape Storage
 	* Knapsack Problem (*Also solved using dynamic approach*)
 	* Huffman Code
-* Lab 9 : Implementing a 2D map/maze
-<br/>
-<br/>
+* Lab 9 : Implementing a 2D map/maze <br/>
+
 ## Group Assignment: Minimum Spanning Tree
 <img src="Assignment/mst.svg" alt="Fig.1 Minimum Spanning Tree" width=400px/>
 We have some network nodes on a 2D cartesian plane.
