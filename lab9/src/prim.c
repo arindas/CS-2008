@@ -48,6 +48,7 @@ map_t * mst_prim (graph_t G, vertex_id src) {
 			if (!visited.search (visited, e->dest) 
 					&& e->weight < *((double *)get (cost, e->dest))) 
 			{ 
+				visited.add (visited, e->dest);
 				put (cost, e->dest, &e->weight);
 				put (prev, e->dest, u);
 				heap_build (*vertex_heap);
