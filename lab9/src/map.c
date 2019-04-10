@@ -16,15 +16,26 @@ map_t * new_map (allocator_t alloc, compare_fn compare) {
 	return map;
 }
 
+static mapping_t * __get (map_t * map, void * key) {
+	mapping_t __key = (mapping_t) { .key = key, .value = NULL }; 
+	return map->mapping_set.search (map->mapping_set, &__key);
+}
+
 void * put (map_t * map, void * key, void * value) {
-	mapping_t * mapping = map->alloc.alloc (sizeof (mapping_t));
-	return map->mapping_set.add (map->mapping_set, mapping);
+	mapping_t * mapping = __get (map, key);
+	
+	if (mapping != NULL) {
+		mapping->value = value;
+	} else {
+		mapping = map->alloc.alloc (sizeof (mapping_t));
+		mapping->key = key; mapping->value = value;
+		map->mapping_set.add (map->mapping_set, mapping);
+	}
+
+	return mapping;
 }
 
 void * get (map_t * map, void * key) {
-	mapping_t __key = (mapping_t) { .key = key, .value = NULL }; 
-	
-	mapping_t * mapping = map->mapping_set
-		.search (map->mapping_set, &__key);
+	mapping_t * mapping = __get (map, key);
 	return mapping? mapping->value: NULL;
 }
