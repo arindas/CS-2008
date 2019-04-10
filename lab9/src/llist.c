@@ -11,10 +11,10 @@ llnode_t * llnode_add_at_head (llist_t *l, void *elem) {
 }
 
 llnode_t * llnode_search (llist_t *l, void *elem, 
-		int (*is_equal)(void *, void *)) {
+		int (*cmp)(void *, void *)) {
 	
 	for (llnode_t *p = l->head; p; p = p->next) 
-		if (is_equal(p->data, elem)) return p;
+		if (cmp(p->data, elem) == 0) return p;
 
 	return NULL;
 }
@@ -45,13 +45,13 @@ static llnode_t **_llnode_delete (llnode_t ** anchor,
 }
 
 int llnode_delete (llist_t *l, void *elem, 
-		int (*is_equal) (void *, void *)) {
+		int (*cmp) (void *, void *)) {
 	
 	int count = 0;
 	
 	for (llnode_t **p = &l->head; *p;) {
 		
-		if (is_equal(elem, (*p)->data)) {
+		if (cmp(elem, (*p)->data) == 0) {
 			p = _llnode_delete (p, l->allocator.free);
 			count++;
 		} else 
@@ -76,19 +76,17 @@ void llnode_for_each (llist_t * l, void (* action) (void *)) {
 		action (p->data);
 }
 
-static void * search (collection_t this, void *element, 
-		int (*is_equal) (void *, void *)) {
+static void * search (collection_t this, void *element) {
 
 	llist_t * l = this.collection_ctx;
-	llnode_t * node = llnode_search (l, element, is_equal);
+	llnode_t * node = llnode_search (l, element, this.compare);
 	return node? node->data: NULL;
 }
 
-static int remove (collection_t this, void * element, 
-		int (*is_equal) (void *, void *)) {
+static int remove (collection_t this, void * element) {
 	
 	llist_t * l = this.collection_ctx;
-	return llnode_delete (l, element, is_equal);
+	return llnode_delete (l, element, this.compare);
 }
 
 static void * add (collection_t this, void * element) {
@@ -122,7 +120,9 @@ static void * pop (collection_t this) {
 	return llist_pop_head (l);
 } 
 
-collection_t llist_get_collection (llist_t *list) {
+collection_t llist_get_collection (
+		llist_t *list, compare_fn compare) {
+	
 	return (collection_t) {
 		.search 		= search,
 		.remove 		= remove,
@@ -131,6 +131,7 @@ collection_t llist_get_collection (llist_t *list) {
 		.for_each 		= for_each,
 		.add_all 		= add_all,
 		.size 			= size,
+		.compare 		= compare,
 		.collection_id  = LIST_ID,
 		.collection_ctx = list 
 	};

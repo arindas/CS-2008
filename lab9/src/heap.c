@@ -3,8 +3,7 @@
 
 #include <stddef.h>
 
-#define cmp(i, j, h) h.is_greater ( \
-		h.compare_ctx, h.buf[(i)], h.buf[(j)]) 
+#define cmp(i, j, h) h.compare(h.buf[(i)], h.buf[(j)]) 
 
 #define out_of_bounds(i, size) (i >= size || i < 0)
 
@@ -12,16 +11,15 @@ static void swap (void ** buf, int i, int j)
 { void * t = buf[i]; buf[i] = buf[j]; buf[j] = t; }
 
 heap_t * get_heap (allocator_t a, size_t cap, 
-		void * cmp_ctx, is_greater_fn is_greater) {
+		compare_fn compare) {
 	
 	heap_t * 	h 	= a.alloc (sizeof (heap_t));
 	void ** 	buf = a.alloc (sizeof (void *) * cap);
 
 	if (!h || !buf) return NULL;
 
-	*h = (heap_t) { .size = 0, .compare_ctx = cmp_ctx, 
-		.is_greater = is_greater, .buf = buf, 
-		.capacity = cap, .allocator = a };
+	*h = (heap_t) { .size = 0, .compare = compare, 
+		.buf = buf, .capacity = cap, .allocator = a };
 
 	return h;
 }
@@ -113,29 +111,26 @@ void * heap_extract_from (heap_t h, int index) {
 	return old_key;
 }
 
-static int _search (heap_t * h, void * key, 
-		int (* is_equal) (void *, void *)) {
+static int _search (heap_t * h, void * key) {
 	
 	int i = h->size; while (i-- > 0) 
-	{ if (is_equal (h->buf[i], key)) return i; }
+	{ if (h->compare(h->buf[i], key) == 0) return i; }
 	
 	return -1;
 }
 
-static void * search (collection_t this, void * key,
-		int (* is_equal) (void *, void *)) {
+static void * search (collection_t this, void * key) {
 
 	heap_t * h = this.collection_ctx;
 
-	int i = _search (h, key, is_equal);
+	int i = _search (h, key);
 	return i > -1? h->buf[i]: NULL;  
 }
 
-static int remove (collection_t this, void * key,
-		int (* is_equal) (void *, void *)) {
+static int remove (collection_t this, void * key) {
 
 	heap_t * h = this.collection_ctx;
-	int i = _search (h, key, is_equal);
+	int i = _search (h, key);
 	return heap_extract_from (*h, i) != NULL;
 }
 
@@ -163,6 +158,7 @@ static int size (collection_t this) {
 }
 
 collection_t heap_get_collection (heap_t * h) {
+	
 	return (collection_t) {
 		.search 		= search,
 		.remove 		= remove,
@@ -171,6 +167,7 @@ collection_t heap_get_collection (heap_t * h) {
 		.for_each 		= for_each,
 		.add_all 		= std_add_all,
 		.size 			= size,
+		.compare 		= h->compare,
 		.collection_id  = HEAP_ID,
 		.collection_ctx = h 
 	};

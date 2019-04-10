@@ -23,8 +23,7 @@ typedef struct {
 	size_t 			capacity;
 	allocator_t 	allocator;
 
-	void * 			compare_ctx;
-	is_greater_fn 	is_greater;
+	compare_fn 		compare;
 } heap_t;
 
 int heapify_bup (heap_t, int i);
@@ -40,8 +39,8 @@ int heap_change_key (heap_t h,
 
 void heap_build (heap_t);
 
-heap_t * get_heap (allocator_t, size_t cap, 
-		void * cmp_ctx, is_greater_fn);
+heap_t * get_heap (allocator_t, 
+		size_t cap, compare_fn);
 
 collection_t heap_get_collection (heap_t *);
 
