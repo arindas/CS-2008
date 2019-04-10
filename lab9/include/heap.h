@@ -39,7 +39,7 @@ int heap_change_key (heap_t h,
 
 void heap_build (heap_t);
 
-heap_t * get_heap (allocator_t, 
+heap_t * new_heap (allocator_t, 
 		size_t cap, compare_fn);
 
 collection_t heap_get_collection (heap_t *);

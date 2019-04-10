@@ -3,17 +3,12 @@
 map_t * new_map (allocator_t alloc, compare_fn compare) {
 	map_t * map 		= alloc.alloc (sizeof (map_t));
 	
-	int pair_compare_fn (void * a, void * b) {
+	int pair_cmp (void * a, void * b) {
 		mapping_t * mA = a, * mB = b;
 		return compare (mA->key, mB->key);	
 	}
 
-	compare_fn * pair_cmp = alloc.alloc (sizeof (compare_fn));
-	* pair_cmp = pair_compare_fn;
-
-	if (!map || !pair_cmp) return NULL;
-
-	collection_t set 	= set_get_collection (alloc, * pair_cmp);
+	collection_t set = set_get_collection (alloc, pair_cmp);
 
 	*map = (map_t) { .mapping_set = set, 
 		.compare = pair_cmp, alloc = alloc };

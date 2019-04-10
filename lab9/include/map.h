@@ -8,7 +8,7 @@ typedef struct { void * key, * value; } mapping_t;
 
 typedef struct {
 	collection_t 	mapping_set;
-	compare_fn * 	compare;
+	compare_fn  	compare;
 
 	allocator_t 	alloc;
 } map_t;

@@ -10,7 +10,7 @@
 static void swap (void ** buf, int i, int j) 
 { void * t = buf[i]; buf[i] = buf[j]; buf[j] = t; }
 
-heap_t * get_heap (allocator_t a, size_t cap, 
+heap_t * new_heap (allocator_t a, size_t cap, 
 		compare_fn compare) {
 	
 	heap_t * 	h 	= a.alloc (sizeof (heap_t));
