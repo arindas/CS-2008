@@ -18,7 +18,8 @@ map_t * depth_first_traversal (graph_t G, vertex_t * V, action_fn action) {
 	
 	while (list->size != 0) {
 		vertex_t * u = llist_pop_head (list);
-		
+		visited.add (visited, u);
+
 		// visit u and break if something went wrong
 		if(!action (u)) break; 
 
@@ -26,7 +27,7 @@ map_t * depth_first_traversal (graph_t G, vertex_t * V, action_fn action) {
 			vertex_t * v = ((edge_t *)e)->dest;
 			if (visited.search(visited, v)) return;
 
-			visited.add (visited, v); put (prev_map, v, u);
+			put (prev_map, v, u);
 			llnode_add_at_head (list, ((edge_t *)e)->dest); 
 		}
 
@@ -48,7 +49,8 @@ map_t * breadth_first_traversal (graph_t G, vertex_t * V, action_fn action) {
 	
 	while (list->size != 0) {
 		vertex_t * u = llist_pop_head (list);
-		
+		visited.add (visited, u);
+
 		// visit u and break if something went wrong
 		if(!action (u)) break; 
 		
@@ -56,7 +58,7 @@ map_t * breadth_first_traversal (graph_t G, vertex_t * V, action_fn action) {
 			vertex_t * v = ((edge_t *)e)->dest;
 			if (visited.search(visited, v)) return;
 
-			visited.add (visited, v); put (prev_map, v, u);
+			put (prev_map, v, u);
 			llnode_add_at_tail (list, ((edge_t *)e)->dest); 
 		}
 
